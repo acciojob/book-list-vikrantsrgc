@@ -9,95 +9,111 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            text-align: center;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
         h1 {
-            margin-top: 20px;
+            text-align: center;
+            margin-bottom: 20px;
         }
         .form-group {
-            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
         }
         .form-group input {
-            padding: 10px;
-            margin: 10px;
-            width: 200px;
+            padding: 8px;
+            margin: 5px 0;
             font-size: 1rem;
         }
         .form-group button {
-            padding: 10px 20px;
+            padding: 10px;
             font-size: 1rem;
             cursor: pointer;
+            background-color: #28a745;
+            color: white;
+            border: none;
         }
-        table {
-            margin-top: 40px;
-            width: 80%;
-            margin-left: auto;
-            margin-right: auto;
+        .table {
+            width: 100%;
             border-collapse: collapse;
+            margin-top: 20px;
         }
-        table, th, td {
+        .table th, .table td {
+            padding: 12px;
+            text-align: left;
             border: 1px solid #ddd;
         }
-        th, td {
-            padding: 10px;
-            text-align: left;
-        }
-        th {
+        .table th {
             background-color: #f2f2f2;
         }
         .delete {
+            background-color: #dc3545;
+            color: white;
+            border: none;
             cursor: pointer;
-            color: red;
-            font-weight: bold;
-        }
-        .delete:hover {
-            color: darkred;
+            padding: 5px 10px;
         }
     </style>
 </head>
 <body>
-
-    <h1>My Book List</h1>
-
-    <div class="form-group">
-        <input type="text" id="title" placeholder="Enter book title" />
-        <input type="text" id="author" placeholder="Enter author name" />
-        <input type="text" id="isbn" placeholder="Enter ISBN number" />
-        <button id="submit" onclick="addBook()">Add Book</button>
+    <div class="container">
+        <h1>MyBookList</h1>
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" placeholder="Enter book title">
+            <label for="author">Author</label>
+            <input type="text" id="author" placeholder="Enter author name">
+            <label for="isbn">ISBN</label>
+            <input type="text" id="isbn" placeholder="Enter ISBN number">
+            <button id="submit">Add Book</button>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>ISBN#</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="book-list">
+                <!-- Book rows will be added here dynamically -->
+            </tbody>
+        </table>
     </div>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Author</th>
-                <th>ISBN#</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody id="book-list">
-            <!-- Book entries will appear here -->
-        </tbody>
-    </table>
-
     <script>
-        // Function to add a book entry
-        function addBook() {
-            // Get input values
-            const title = document.getElementById('title').value;
-            const author = document.getElementById('author').value;
-            const isbn = document.getElementById('isbn').value;
+        // Get references to the input fields and button
+        const titleInput = document.getElementById('title');
+        const authorInput = document.getElementById('author');
+        const isbnInput = document.getElementById('isbn');
+        const submitButton = document.getElementById('submit');
+        const bookList = document.getElementById('book-list');
 
-            // Validate inputs
-            if (!title || !author || !isbn) {
-                alert("Please fill in all fields!");
+        // Function to add a new book to the table
+        function addBook() {
+            // Get values from the input fields
+            const title = titleInput.value.trim();
+            const author = authorInput.value.trim();
+            const isbn = isbnInput.value.trim();
+
+            // Validate input fields
+            if (title === "" || author === "" || isbn === "") {
+                alert("All fields are required.");
                 return;
             }
 
-            // Create a new table row
+            // Create a new row
             const row = document.createElement('tr');
 
-            // Create and append cells for title, author, and isbn
+            // Create and append cells to the row
             const titleCell = document.createElement('td');
             titleCell.textContent = title;
             row.appendChild(titleCell);
@@ -112,24 +128,26 @@
 
             // Create and append the delete button
             const deleteCell = document.createElement('td');
-            const deleteBtn = document.createElement('button');
-            deleteBtn.textContent = 'Clear';
-            deleteBtn.classList.add('delete');
-            deleteBtn.onclick = function() {
-                row.remove();  // Remove the row from the table when clicked
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Clear';
+            deleteButton.classList.add('delete');
+            deleteButton.onclick = function() {
+                row.remove();
             };
-            deleteCell.appendChild(deleteBtn);
+            deleteCell.appendChild(deleteButton);
             row.appendChild(deleteCell);
 
             // Append the row to the table body
-            document.getElementById('book-list').appendChild(row);
+            bookList.appendChild(row);
 
-            // Clear the input fields
-            document.getElementById('title').value = '';
-            document.getElementById('author').value = '';
-            document.getElementById('isbn').value = '';
+            // Clear input fields
+            titleInput.value = '';
+            authorInput.value = '';
+            isbnInput.value = '';
         }
-    </script>
 
+        // Add event listener to the submit button
+        submitButton.addEventListener('click', addBook);
+    </script>
 </body>
 </html>

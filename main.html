@@ -40,18 +40,21 @@
             color: white;
             border: none;
         }
-        .table {
+        .table-striped {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
-        .table th, .table td {
+        .table-striped th, .table-striped td {
             padding: 12px;
             text-align: left;
             border: 1px solid #ddd;
         }
-        .table th {
+        .table-striped th {
             background-color: #f2f2f2;
+        }
+        .table-striped tr:nth-child(even) {
+            background-color: #f9f9f9;
         }
         .delete {
             background-color: #dc3545;
@@ -74,7 +77,7 @@
             <input type="text" id="isbn" placeholder="Enter ISBN number">
             <button id="submit">Add Book</button>
         </div>
-        <table class="table">
+        <table class="table-striped">
             <thead>
                 <tr>
                     <th>Title</th>
